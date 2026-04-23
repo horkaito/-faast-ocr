@@ -49,9 +49,9 @@
     <!-- ★ポイント: JavaScriptなし。<a>タグ直リンク。Chromeがintentを処理する -->
     <div id="status" class="status ready">📷 Lensでスキャン → 戻ったら緑ボタン</div>
 
-    <!-- Googleアプリ内のLens機能を起動（BROWSABLEあり） -->
-    <a class="lens-btn" href="intent://#Intent;action=com.google.android.apps.lens.OPEN_LENS;category=android.intent.category.BROWSABLE;package=com.google.android.googlequicksearchbox;S.browser_fallback_url=https%3A%2F%2Flens.google.com;end">
-        🔍 Google Lensを開く
+    <!-- Googleアプリを開く（BROWSABLEあり。ホーム画面が開く → 📷タップでLens） -->
+    <a class="lens-btn" href="intent://#Intent;package=com.google.android.googlequicksearchbox;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;category=android.intent.category.BROWSABLE;S.browser_fallback_url=https%3A%2F%2Fwww.google.com;end">
+        🔍 Googleアプリを開く → 📷でLens
     </a>
         <span class="n">1</span> Lensが開く → ラベルを映す<br>
         <span class="n">2</span> テキストをタップ → <strong>コピー</strong><br>
