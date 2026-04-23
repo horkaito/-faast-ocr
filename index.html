@@ -5,80 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>📋 期限→Faast</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, 'Hiragino Sans', sans-serif; background: #1a1a2e; color: #fff; min-height: 100vh; padding: 12px; }
-        .header { text-align: center; padding: 8px 0 4px; }
-        .header h1 { font-size: 22px; }
-        .status { text-align: center; padding: 10px; margin: 6px 0; border-radius: 8px; font-size: 14px; transition: all 0.3s; }
-        .status.ready { background: #16213e; }
-        .status.done { background: #0f3460; }
-        .status.sent { background: #00aa55; }
-        .status.error { background: #cc3333; }
-        .status.reading { background: #e94560; animation: pulse 1s infinite; }
-        @keyframes pulse { 50% { opacity: 0.7; } }
-        .lens-btn { display: block; width: 100%; padding: 22px; font-size: 22px; border: none; border-radius: 16px; background: #4285f4; color: #fff; cursor: pointer; margin: 10px 0; font-weight: bold; box-shadow: 0 4px 12px rgba(66,133,244,0.4); text-decoration: none; text-align: center; }
-        .lens-btn:active { transform: scale(0.97); }
-        .lens-hint { background: #16213e; border-radius: 10px; padding: 12px; margin: 8px 0; font-size: 13px; color: #aaa; line-height: 1.7; }
-        .lens-hint .num { display: inline-block; width: 20px; height: 20px; background: #4285f4; color: #fff; border-radius: 50%; text-align: center; line-height: 20px; font-size: 11px; margin-right: 4px; font-weight: bold; }
-        .clip-btn { display: block; width: 100%; padding: 16px; font-size: 18px; border: none; border-radius: 14px; background: #00aa55; color: #fff; cursor: pointer; margin: 8px 0; font-weight: bold; }
-        .clip-btn:active { transform: scale(0.97); }
-        .auto-badge { text-align: center; font-size: 11px; color: #555; margin: 4px 0; }
-        .manual-area { background: #16213e; border-radius: 12px; padding: 12px; margin: 8px 0; }
-        .manual-area summary { cursor: pointer; font-size: 13px; color: #888; }
-        .manual-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #333; border-radius: 8px; background: #0f3460; color: #fff; margin-top: 8px; }
-        .manual-input::placeholder { color: #555; font-size: 13px; }
-        .manual-input:focus { outline: none; border-color: #00ff88; }
-        .result-area { background: #16213e; border-radius: 12px; padding: 16px; margin: 10px 0; text-align: center; display: none; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .result-label { font-size: 11px; color: #888; }
-        .result-date { font-size: 48px; font-weight: bold; color: #00ff88; margin: 6px 0; font-family: 'SF Mono', 'Consolas', monospace; }
-        .result-src { font-size: 11px; color: #666; }
-        .result-edit { width: 60%; padding: 8px; font-size: 18px; text-align: center; border: 2px solid #555; border-radius: 8px; background: #0f3460; color: #fff; font-family: 'SF Mono', 'Consolas', monospace; display: none; }
-        .result-edit:focus { border-color: #00ff88; outline: none; }
-        .edit-toggle { font-size: 12px; color: #666; cursor: pointer; text-decoration: underline; margin-top: 4px; }
-        .send-btn { display: block; width: 100%; padding: 20px; font-size: 24px; border: none; border-radius: 14px; background: #00ff88; color: #1a1a2e; cursor: pointer; font-weight: bold; margin-top: 12px; }
-        .send-btn:active { transform: scale(0.97); }
-        .send-btn:disabled { background: #333; color: #666; }
-        .clear-btn { display: block; width: 100%; padding: 12px; font-size: 15px; border: 2px solid #555; border-radius: 10px; background: transparent; color: #888; cursor: pointer; margin-top: 8px; }
-        .history { margin-top: 16px; }
-        .history-title { font-size: 13px; color: #888; margin-bottom: 4px; }
-        .history-item { background: #16213e; padding: 8px 12px; border-radius: 8px; margin: 4px 0; display: flex; justify-content: space-between; font-size: 14px; align-items: center; }
-        .history-item .time { color: #888; font-size: 12px; }
-        .settings { background: #16213e; border-radius: 12px; padding: 12px; margin: 16px 0; }
-        .settings summary { cursor: pointer; font-size: 14px; color: #888; }
-        .settings label { color: #888; font-size: 12px; display: block; margin-top: 8px; }
-        .settings input { width: 100%; padding: 8px; margin: 4px 0; border: 1px solid #333; border-radius: 6px; background: #0f3460; color: #fff; font-size: 14px; }
-        .settings p { color: #555; font-size: 11px; margin-top: 2px; }
-        #debug-log { background: #0a0a1a; border-radius: 8px; padding: 8px; margin: 8px 0; font-size: 10px; color: #666; max-height: 80px; overflow-y: auto; display: none; }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:-apple-system,'Hiragino Sans',sans-serif;background:#1a1a2e;color:#fff;min-height:100vh;padding:12px}
+        .header{text-align:center;padding:8px 0 4px} .header h1{font-size:22px}
+        .status{text-align:center;padding:10px;margin:6px 0;border-radius:8px;font-size:14px;transition:all .3s}
+        .status.ready{background:#16213e} .status.done{background:#0f3460} .status.sent{background:#00aa55} .status.error{background:#cc3333}
+        .lens-btn{display:block;width:100%;padding:22px;font-size:22px;border:none;border-radius:16px;background:#4285f4;color:#fff;cursor:pointer;margin:10px 0;font-weight:bold;box-shadow:0 4px 12px rgba(66,133,244,.4);text-decoration:none;text-align:center}
+        .lens-btn:active{transform:scale(.97)}
+        .lens-hint{background:#16213e;border-radius:10px;padding:12px;margin:8px 0;font-size:13px;color:#aaa;line-height:1.7}
+        .lens-hint .n{display:inline-block;width:20px;height:20px;background:#4285f4;color:#fff;border-radius:50%;text-align:center;line-height:20px;font-size:11px;margin-right:4px;font-weight:bold}
+        .clip-btn{display:block;width:100%;padding:16px;font-size:18px;border:none;border-radius:14px;background:#00aa55;color:#fff;cursor:pointer;margin:8px 0;font-weight:bold}
+        .clip-btn:active{transform:scale(.97)}
+        .auto-badge{text-align:center;font-size:11px;color:#555;margin:4px 0}
+        .manual-area{background:#16213e;border-radius:12px;padding:12px;margin:8px 0}
+        .manual-area summary{cursor:pointer;font-size:13px;color:#888}
+        .manual-input{width:100%;padding:12px;font-size:16px;border:2px solid #333;border-radius:8px;background:#0f3460;color:#fff;margin-top:8px}
+        .manual-input::placeholder{color:#555;font-size:13px} .manual-input:focus{outline:none;border-color:#00ff88}
+        .result-area{background:#16213e;border-radius:12px;padding:16px;margin:10px 0;text-align:center;display:none}
+        .result-label{font-size:11px;color:#888}
+        .result-date{font-size:48px;font-weight:bold;color:#00ff88;margin:6px 0;font-family:'SF Mono','Consolas',monospace}
+        .result-src{font-size:11px;color:#666}
+        .result-edit{width:60%;padding:8px;font-size:18px;text-align:center;border:2px solid #555;border-radius:8px;background:#0f3460;color:#fff;font-family:'SF Mono','Consolas',monospace;display:none}
+        .result-edit:focus{border-color:#00ff88;outline:none}
+        .edit-toggle{font-size:12px;color:#666;cursor:pointer;text-decoration:underline;margin-top:4px}
+        .send-btn{display:block;width:100%;padding:20px;font-size:24px;border:none;border-radius:14px;background:#00ff88;color:#1a1a2e;cursor:pointer;font-weight:bold;margin-top:12px}
+        .send-btn:active{transform:scale(.97)} .send-btn:disabled{background:#333;color:#666}
+        .clear-btn{display:block;width:100%;padding:12px;font-size:15px;border:2px solid #555;border-radius:10px;background:transparent;color:#888;cursor:pointer;margin-top:8px}
+        .history{margin-top:16px} .history-title{font-size:13px;color:#888;margin-bottom:4px}
+        .history-item{background:#16213e;padding:8px 12px;border-radius:8px;margin:4px 0;display:flex;justify-content:space-between;font-size:14px;align-items:center}
+        .history-item .time{color:#888;font-size:12px}
+        .settings{background:#16213e;border-radius:12px;padding:12px;margin:16px 0}
+        .settings summary{cursor:pointer;font-size:14px;color:#888}
+        .settings label{color:#888;font-size:12px;display:block;margin-top:8px}
+        .settings input{width:100%;padding:8px;margin:4px 0;border:1px solid #333;border-radius:6px;background:#0f3460;color:#fff;font-size:14px}
+        .settings p{color:#555;font-size:11px;margin-top:2px}
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>📋 期限 → Faast</h1>
-    </div>
+    <div class="header"><h1>📋 期限 → Faast</h1></div>
 
-    <div id="status" class="status ready">📷 Lensでスキャン → 戻ったら自動検出</div>
+    <div id="status" class="status ready">📷 Lensでスキャン → 戻ったら緑ボタン</div>
 
-    <a id="lens-link" class="lens-btn" href="#" onclick="openLens(); return false;">
+    <!-- ★ポイント: JavaScriptなし。<a>タグ直リンク。Chromeがintentを処理する -->
+    <a class="lens-btn" href="intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.google.ar.lens;end">
         🔍 Google Lensを開く
     </a>
 
     <div class="lens-hint">
-        <span class="num">1</span> Lensが開く → ラベルを映す<br>
-        <span class="num">2</span> テキストをタップ → <strong>コピー</strong><br>
-        <span class="num">3</span> ここに戻る → <strong>自動で検出！</strong>
+        <span class="n">1</span> Lensが開く → ラベルを映す<br>
+        <span class="n">2</span> テキストをタップ → <strong>コピー</strong><br>
+        <span class="n">3</span> ここに戻る → <strong>緑ボタンで読み取り！</strong>
     </div>
 
-    <button class="clip-btn" onclick="readClipboard()">
-        📋 コピー済みテキストを読み取る
-    </button>
+    <button class="clip-btn" onclick="readClipboard()">📋 コピー済みテキストを読み取る</button>
     <div class="auto-badge" id="auto-badge">※ このページに戻ると自動でも読み取ります</div>
 
     <details class="manual-area">
         <summary>✏️ 手入力・コピペで入力</summary>
-        <input type="text" id="manual-input" class="manual-input"
-               placeholder="ラベルのテキストをペースト or 日付を手入力"
-               autocomplete="off" autocorrect="off" spellcheck="false">
+        <input type="text" id="manual-input" class="manual-input" placeholder="ラベルのテキストをペースト or 日付を手入力" autocomplete="off">
     </details>
 
     <div id="result-area" class="result-area">
@@ -101,271 +85,125 @@
         <label>ntfyトピック名（合言葉）</label>
         <input id="topic" value="" placeholder="例: tanaka-kigen-abc123" onchange="localStorage.setItem('ntfy-topic', this.value)">
         <p>※ PC側と同じトピック名にしてください</p>
-        <label style="margin-top:12px;">🔧 デバッグログ</label>
-        <button onclick="document.getElementById('debug-log').style.display='block'" style="padding:4px 8px; font-size:11px; background:#333; color:#888; border:1px solid #555; border-radius:4px; cursor:pointer;">ログ表示</button>
     </details>
 
-    <div id="debug-log"></div>
+<script>
+const NTFY_URL='https://ntfy.sh';
+let currentFaastDate=null, matchedSource='', lastClipText='';
+const savedTopic=localStorage.getItem('ntfy-topic');
+if(savedTopic)document.getElementById('topic').value=savedTopic;
+function reiwaTOAD(r){return 2018+parseInt(r,10)}
 
-    <script>
-    const NTFY_URL = 'https://ntfy.sh';
-    let currentFaastDate = null;
-    let matchedSource = '';
-    const savedTopic = localStorage.getItem('ntfy-topic');
-    if (savedTopic) document.getElementById('topic').value = savedTopic;
-    function reiwaTOAD(rYear) { return 2018 + parseInt(rYear, 10); }
+// クリップボード読み取り（ページに戻った時 + 緑ボタン）
+document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible')await readClipboard()});
+window.addEventListener('focus',async()=>{await readClipboard()});
 
-    function debugLog(msg) {
-        console.log('[OCR] ' + msg);
-        const el = document.getElementById('debug-log');
-        el.textContent += new Date().toLocaleTimeString() + ' ' + msg + '\n';
-        el.scrollTop = el.scrollHeight;
+async function readClipboard(){
+    try{
+        const text=await navigator.clipboard.readText();
+        if(!text||text.trim()===''||text===lastClipText)return;
+        lastClipText=text;
+        document.getElementById('status').textContent='🔍 読み取り中...';
+        const result=smartParseDate(text);
+        if(result)showResult(result.faastDate,result.source,result.method);
+        else{document.getElementById('status').className='status error';document.getElementById('status').textContent='⚠️ 賞味期限が見つかりません';}
+    }catch(err){
+        document.getElementById('auto-badge').textContent='※ 自動読み取り不可 → 緑ボタンをタップ';
     }
+}
 
-    // ==========================================
-    //  Google Lens起動（複数スキーム試行）
-    // ==========================================
-    function openLens() {
-        debugLog('Lens起動開始');
+// 手入力
+const mi=document.getElementById('manual-input');
+let dt=null;
+mi.addEventListener('input',()=>{clearTimeout(dt);dt=setTimeout(()=>{
+    const r=mi.value.trim();if(!r){hideResult();return;}
+    const res=smartParseDate(r);if(res)showResult(res.faastDate,res.source,res.method);
+    else{document.getElementById('result-area').style.display='none';document.getElementById('status').textContent='🔍 入力中...';}
+},300)});
+mi.addEventListener('paste',()=>{setTimeout(()=>{mi.dispatchEvent(new Event('input'))},50)});
 
-        // 試行するURIリスト（順番に試す）
-        const uris = [
-            // 1. googlelens:// カスタムスキーム
-            'googlelens://',
-            // 2. google://lens（Googleアプリ内Lens）
-            'google://lens',
-            // 3. Intent: Googleアプリ内Lens + fallback
-            'intent://#Intent;action=com.google.android.apps.lens.OPEN_LENS;package=com.google.android.googlequicksearchbox;S.browser_fallback_url=https%3A%2F%2Fwww.google.com;end',
-            // 4. Intent: Lens単体アプリ LAUNCHER + fallback
-            'intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.google.ar.lens;S.browser_fallback_url=https%3A%2F%2Fwww.google.com;end',
-        ];
-
-        let tryIndex = 0;
-
-        function tryNext() {
-            if (tryIndex >= uris.length) {
-                debugLog('全パターン失敗 → google.com を開く');
-                window.open('https://www.google.com', '_blank');
-                return;
-            }
-
-            const uri = uris[tryIndex];
-            debugLog(`試行${tryIndex + 1}: ${uri.substring(0, 60)}...`);
-            tryIndex++;
-
-            // hidden iframe で試す（ページ遷移を防ぐ）
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = uri;
-            document.body.appendChild(iframe);
-
-            // 同時に window.location も試す（iframeでスキームが効かない場合）
-            setTimeout(() => {
-                if (!document.hidden) {
-                    window.location.href = uri;
-                }
-            }, 100);
-
-            // 600ms後にまだこのページにいたら次を試す
-            setTimeout(() => {
-                try { document.body.removeChild(iframe); } catch(e) {}
-                if (!document.hidden) {
-                    debugLog(`試行${tryIndex} 失敗（ページ遷移せず）`);
-                    tryNext();
-                } else {
-                    debugLog(`試行${tryIndex} 成功（ページ遷移した）`);
-                }
-            }, 600);
+// スマート日付検出
+function smartParseDate(text){
+    const KW=['賞味期限','消費期限','期限','品質保持期限','EXP','exp','BB','BEST BEFORE','USE BY'];
+    const lines=text.split(/[\n\r]+/),all=text.replace(/[\n\r]+/g,' ');
+    for(const kw of KW){
+        for(let i=0;i<lines.length;i++){const ki=lines[i].indexOf(kw);if(ki===-1)continue;
+            const af=lines[i].substring(ki+kw.length);const d=parseDate(af);
+            if(d)return{faastDate:d,source:`「${kw}」→ ${af.trim().substring(0,30)}`,method:'🎯 キーワード'};
+            if(i+1<lines.length){const d2=parseDate(lines[i+1].trim());if(d2)return{faastDate:d2,source:`「${kw}」次行`,method:'🎯 キーワード'};}
         }
-
-        tryNext();
+        const ki=all.indexOf(kw);if(ki!==-1){const d=parseDate(all.substring(ki+kw.length));if(d)return{faastDate:d,source:`「${kw}」`,method:'🎯 キーワード'};}
     }
-
-    // ==========================================
-    //  クリップボード自動読み取り
-    // ==========================================
-    let lastClipText = '';
-
-    document.addEventListener('visibilitychange', async () => {
-        if (document.visibilityState === 'visible') {
-            debugLog('ページに戻った → クリップボード読み取り');
-            await readClipboard();
-        }
-    });
-
-    window.addEventListener('focus', async () => { await readClipboard(); });
-
-    async function readClipboard() {
-        try {
-            const text = await navigator.clipboard.readText();
-            if (!text || text.trim() === '' || text === lastClipText) return;
-            lastClipText = text;
-            debugLog('クリップボード: ' + text.substring(0, 50));
-            document.getElementById('status').className = 'status reading';
-            document.getElementById('status').textContent = '🔍 読み取り中...';
-            const result = smartParseDate(text);
-            if (result) {
-                showResult(result.faastDate, result.source, result.method);
-            } else {
-                document.getElementById('status').className = 'status error';
-                document.getElementById('status').textContent = '⚠️ 賞味期限が見つかりません';
-            }
-        } catch (err) {
-            debugLog('クリップボード読み取り不可: ' + err.message);
-            document.getElementById('auto-badge').textContent = '※ 自動読み取り不可 → 緑ボタンをタップ';
-        }
+    let c=text;c=c.replace(/\d+[\.,]?\d*\s*(g|mg|kcal|cal|ml|cm|kg|mm|kJ|μg|mcg|%|個|本|枚|袋|箱)\b/gi,'___');
+    c=c.replace(/(内容量|容量|重量|サイズ)\s*[:：]?\s*\d+[\.,]?\d*/g,'___');
+    const d=parseDate(c);if(d)return{faastDate:d,source:'テキスト全体',method:'📅 パターン'};
+    for(const line of lines){
+        if(/\d+\.?\d*\s*(g|mg|kcal|ml)\b/i.test(line))continue;
+        if(/(たんぱく|脂質|炭水化物|ナトリウム|エネルギー|食塩|糖質|カロリー)/i.test(line))continue;
+        const d=parseDate(line.trim());if(d)return{faastDate:d,source:line.trim().substring(0,30),method:'📅 パターン'};
     }
+    const dd=parseDate(text);if(dd)return{faastDate:dd,source:text.substring(0,20),method:'✏️ 直接入力'};
+    return null;
+}
 
-    // ==========================================
-    //  手入力フィールド
-    // ==========================================
-    const manualInput = document.getElementById('manual-input');
-    let debounceTimer = null;
-    manualInput.addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            const raw = manualInput.value.trim();
-            if (!raw) { hideResult(); return; }
-            const result = smartParseDate(raw);
-            if (result) showResult(result.faastDate, result.source, result.method);
-            else { document.getElementById('result-area').style.display = 'none'; document.getElementById('status').textContent = '🔍 入力中...'; }
-        }, 300);
-    });
-    manualInput.addEventListener('paste', () => { setTimeout(() => { manualInput.dispatchEvent(new Event('input')); }, 50); });
+function parseDate(text){
+    let t=text.replace(/\s+/g,' ').trim();
+    t=t.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
+    t=t.replace(/．/g,'.').replace(/／/g,'/').replace(/－/g,'-');
+    const P=[
+        {r:/[RrＲ]\.?(\d{1,2})[\.\/\-](\d{1,2})[\.\/\-](\d{1,2})/,f:m=>toF(reiwaTOAD(m[1]),m[2],m[3])},
+        {r:/令和\s*(\d{1,2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/,f:m=>toF(reiwaTOAD(m[1]),m[2],m[3])},
+        {r:/令和\s*(\d{1,2})\s*年\s*(\d{1,2})\s*月/,f:m=>toE(reiwaTOAD(m[1]),m[2])},
+        {r:/(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/,f:m=>toF(m[1],m[2],m[3])},
+        {r:/(20\d{2})[\.\/\-](\d{1,2})[\.\/\-](\d{1,2})/,f:m=>toF(m[1],m[2],m[3])},
+        {r:/(20\d{2})\s*年\s*(\d{1,2})\s*月/,f:m=>toE(m[1],m[2])},
+        {r:/(20\d{2})[\.\/\-](\d{1,2})(?![\.\/\-\d])/,f:m=>toE(m[1],m[2])},
+        {r:/(?<!\d)(\d{2})[\.\/\-](\d{1,2})[\.\/\-](\d{1,2})(?!\d)/,f:m=>toF(2000+parseInt(m[1]),m[2],m[3])},
+        {r:/(?<!\d)(\d{2})[\.\/\-](\d{1,2})(?![\.\/\-\d])/,f:m=>toE(2000+parseInt(m[1]),m[2])},
+        {r:/(20\d{2})(\d{2})(\d{2})/,f:m=>toF(m[1],m[2],m[3])},
+        {r:/(20\d{2})(\d{2})(?!\d)/,f:m=>toE(m[1],m[2])},
+    ];
+    for(const p of P){const m=t.match(p.r);if(m){const r=p.f(m);if(r)return r;}}
+    return null;
+}
+function toF(y,m,d){const Y=parseInt(y),M=parseInt(m),D=parseInt(d);if(Y<2024||Y>2040||M<1||M>12||D<1||D>31)return null;return pad(M)+'/'+pad(D)+'/'+Y}
+function toE(y,m){const Y=parseInt(y),M=parseInt(m);if(Y<2024||Y>2040||M<1||M>12)return null;return pad(M)+'/'+pad(new Date(Y,M,0).getDate())+'/'+Y}
+function pad(n){return String(n).padStart(2,'0')}
 
-    // ==========================================
-    //  スマート日付検出
-    // ==========================================
-    function smartParseDate(text) {
-        const keywords = ['賞味期限', '消費期限', '期限', '品質保持期限', 'EXP', 'exp', 'BB', 'BEST BEFORE', 'USE BY'];
-        const lines = text.split(/[\n\r]+/);
-        const allText = text.replace(/[\n\r]+/g, ' ');
+function showResult(f,s,m){
+    currentFaastDate=f;matchedSource=s;
+    document.getElementById('result-area').style.display='block';
+    document.getElementById('result-date').textContent=f;document.getElementById('result-date').style.display='block';
+    document.getElementById('result-src').textContent=`${m}: ${s}`;
+    document.getElementById('result-edit').value=f;document.getElementById('result-edit').style.display='none';
+    document.getElementById('edit-toggle').textContent='✏️ 手動修正';
+    document.getElementById('send-btn').disabled=false;
+    document.getElementById('status').className='status done';document.getElementById('status').textContent=`✅ 検出 → ${f}`;
+}
+function hideResult(){document.getElementById('result-area').style.display='none';currentFaastDate=null;document.getElementById('status').className='status ready';document.getElementById('status').textContent='📷 Lensでスキャン → 戻ったら緑ボタン'}
+function toggleEdit(){
+    const d=document.getElementById('result-date'),e=document.getElementById('result-edit'),t=document.getElementById('edit-toggle');
+    if(e.style.display==='none'||!e.style.display){e.style.display='block';e.focus();e.select();d.style.display='none';t.textContent='✅ 確定'}
+    else{const v=e.value.trim();if(v){currentFaastDate=v;d.textContent=v}e.style.display='none';d.style.display='block';t.textContent='✏️ 手動修正'}
+}
+function clearAll(){document.getElementById('result-area').style.display='none';document.getElementById('manual-input').value='';currentFaastDate=null;lastClipText='';document.getElementById('status').className='status ready';document.getElementById('status').textContent='📷 Lensでスキャン → 戻ったら緑ボタン'}
 
-        for (const keyword of keywords) {
-            for (let i = 0; i < lines.length; i++) {
-                const kwIndex = lines[i].indexOf(keyword);
-                if (kwIndex === -1) continue;
-                const after = lines[i].substring(kwIndex + keyword.length);
-                const date = parseDate(after);
-                if (date) return { faastDate: date, source: `「${keyword}」→ ${after.trim().substring(0, 30)}`, method: '🎯 キーワード' };
-                if (i + 1 < lines.length) { const d2 = parseDate(lines[i + 1].trim()); if (d2) return { faastDate: d2, source: `「${keyword}」次行`, method: '🎯 キーワード' }; }
-            }
-            const kwIdx = allText.indexOf(keyword);
-            if (kwIdx !== -1) { const d = parseDate(allText.substring(kwIdx + keyword.length)); if (d) return { faastDate: d, source: `「${keyword}」`, method: '🎯 キーワード' }; }
-        }
-
-        let cleaned = text;
-        cleaned = cleaned.replace(/\d+[\.,]?\d*\s*(g|mg|kcal|cal|ml|cm|kg|mm|kJ|μg|mcg|%|個|本|枚|袋|箱)\b/gi, '___');
-        cleaned = cleaned.replace(/(内容量|容量|重量|サイズ)\s*[:：]?\s*\d+[\.,]?\d*/g, '___');
-        const date = parseDate(cleaned);
-        if (date) return { faastDate: date, source: 'テキスト全体', method: '📅 パターン' };
-
-        for (const line of lines) {
-            if (/\d+\.?\d*\s*(g|mg|kcal|ml)\b/i.test(line)) continue;
-            if (/(たんぱく|脂質|炭水化物|ナトリウム|エネルギー|食塩|糖質|カロリー)/i.test(line)) continue;
-            const d = parseDate(line.trim());
-            if (d) return { faastDate: d, source: line.trim().substring(0, 30), method: '📅 パターン' };
-        }
-
-        const directDate = parseDate(text);
-        if (directDate) return { faastDate: directDate, source: text.substring(0, 20), method: '✏️ 直接入力' };
-        return null;
-    }
-
-    // ==========================================
-    //  日付パーサー
-    // ==========================================
-    function parseDate(text) {
-        let t = text.replace(/\s+/g, ' ').trim();
-        t = t.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
-        t = t.replace(/．/g, '.').replace(/／/g, '/').replace(/－/g, '-');
-        const P = [
-            { re: /[RrＲ]\.?(\d{1,2})[\.\/\-](\d{1,2})[\.\/\-](\d{1,2})/, f: m => toF(reiwaTOAD(m[1]), m[2], m[3]) },
-            { re: /令和\s*(\d{1,2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/, f: m => toF(reiwaTOAD(m[1]), m[2], m[3]) },
-            { re: /令和\s*(\d{1,2})\s*年\s*(\d{1,2})\s*月/, f: m => toE(reiwaTOAD(m[1]), m[2]) },
-            { re: /(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/, f: m => toF(m[1], m[2], m[3]) },
-            { re: /(20\d{2})[\.\/\-](\d{1,2})[\.\/\-](\d{1,2})/, f: m => toF(m[1], m[2], m[3]) },
-            { re: /(20\d{2})\s*年\s*(\d{1,2})\s*月/, f: m => toE(m[1], m[2]) },
-            { re: /(20\d{2})[\.\/\-](\d{1,2})(?![\.\/\-\d])/, f: m => toE(m[1], m[2]) },
-            { re: /(?<!\d)(\d{2})[\.\/\-](\d{1,2})[\.\/\-](\d{1,2})(?!\d)/, f: m => toF(2000+parseInt(m[1]), m[2], m[3]) },
-            { re: /(?<!\d)(\d{2})[\.\/\-](\d{1,2})(?![\.\/\-\d])/, f: m => toE(2000+parseInt(m[1]), m[2]) },
-            { re: /(20\d{2})(\d{2})(\d{2})/, f: m => toF(m[1], m[2], m[3]) },
-            { re: /(20\d{2})(\d{2})(?!\d)/, f: m => toE(m[1], m[2]) },
-        ];
-        for (const p of P) { const m = t.match(p.re); if (m) { const r = p.f(m); if (r) return r; } }
-        return null;
-    }
-    function toF(y,m,d) { const Y=parseInt(y),M=parseInt(m),D=parseInt(d); if(Y<2024||Y>2040||M<1||M>12||D<1||D>31)return null; return pad(M)+'/'+pad(D)+'/'+Y; }
-    function toE(y,m) { const Y=parseInt(y),M=parseInt(m); if(Y<2024||Y>2040||M<1||M>12)return null; return pad(M)+'/'+pad(new Date(Y,M,0).getDate())+'/'+Y; }
-    function pad(n) { return String(n).padStart(2,'0'); }
-
-    // ==========================================
-    //  結果表示
-    // ==========================================
-    function showResult(faastDate, source, method) {
-        currentFaastDate = faastDate; matchedSource = source;
-        document.getElementById('result-area').style.display = 'block';
-        document.getElementById('result-date').textContent = faastDate;
-        document.getElementById('result-date').style.display = 'block';
-        document.getElementById('result-src').textContent = `${method}: ${source}`;
-        document.getElementById('result-edit').value = faastDate;
-        document.getElementById('result-edit').style.display = 'none';
-        document.getElementById('edit-toggle').textContent = '✏️ 手動修正';
-        document.getElementById('send-btn').disabled = false;
-        document.getElementById('status').className = 'status done';
-        document.getElementById('status').textContent = `✅ 検出 → ${faastDate}`;
-    }
-    function hideResult() {
-        document.getElementById('result-area').style.display = 'none'; currentFaastDate = null;
-        document.getElementById('status').className = 'status ready';
-        document.getElementById('status').textContent = '📷 Lensでスキャン → 戻ったら自動検出';
-    }
-    function toggleEdit() {
-        const d=document.getElementById('result-date'), e=document.getElementById('result-edit'), t=document.getElementById('edit-toggle');
-        if(e.style.display==='none'||!e.style.display){e.style.display='block';e.focus();e.select();d.style.display='none';t.textContent='✅ 確定';}
-        else{const v=e.value.trim();if(v){currentFaastDate=v;d.textContent=v;}e.style.display='none';d.style.display='block';t.textContent='✏️ 手動修正';}
-    }
-    function clearAll() {
-        document.getElementById('result-area').style.display='none'; document.getElementById('manual-input').value='';
-        currentFaastDate=null; lastClipText='';
-        document.getElementById('status').className='status ready';
-        document.getElementById('status').textContent='📷 Lensでスキャン → 戻ったら自動検出';
-    }
-
-    // ==========================================
-    //  ntfy.sh送信
-    // ==========================================
-    async function sendToFaast() {
-        const e=document.getElementById('result-edit');
-        const dateToSend=(e.style.display!=='none'&&e.value.trim())?e.value.trim():currentFaastDate;
-        if(!dateToSend){alert('日付がありません');return;}
-        if(!/^\d{2}\/\d{2}\/\d{4}$/.test(dateToSend)){if(!confirm(`「${dateToSend}」はMM/DD/YYYY形式ではありません。送信しますか？`))return;}
-        const topic=document.getElementById('topic').value.trim();
-        if(!topic){alert('⚙設定からトピック名を入力してください');return;}
-        document.getElementById('send-btn').disabled=true;
-        try {
-            const r=await fetch(`${NTFY_URL}/${topic}`,{method:'POST',body:dateToSend,headers:{'Title':'expiry-date'}});
-            if(!r.ok)throw new Error(`HTTP ${r.status}`);
-            document.getElementById('status').className='status sent';
-            document.getElementById('status').textContent=`📨 送信完了: ${dateToSend}`;
-            addHistory(dateToSend); setTimeout(clearAll,1000);
-        } catch(err) {
-            document.getElementById('status').className='status error';
-            document.getElementById('status').textContent='⚠️ 送信失敗: '+err.message;
-            document.getElementById('send-btn').disabled=false;
-        }
-    }
-
-    let historyCount=0;
-    function addHistory(d) {
-        historyCount++; document.getElementById('history-count').textContent=historyCount;
-        const div=document.getElementById('history-list');
-        const t=new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-        const item=document.createElement('div'); item.className='history-item';
-        item.innerHTML=`<span>📦 ${d}</span><span class="time">${t}</span>`;
-        div.insertBefore(item,div.firstChild);
-        while(div.children.length>30)div.removeChild(div.lastChild);
-    }
-    </script>
+async function sendToFaast(){
+    const e=document.getElementById('result-edit');
+    const d=(e.style.display!=='none'&&e.value.trim())?e.value.trim():currentFaastDate;
+    if(!d){alert('日付がありません');return}
+    if(!/^\d{2}\/\d{2}\/\d{4}$/.test(d)){if(!confirm(`「${d}」はMM/DD/YYYY形式ではありません。送信しますか？`))return}
+    const topic=document.getElementById('topic').value.trim();
+    if(!topic){alert('⚙設定からトピック名を入力してください');return}
+    document.getElementById('send-btn').disabled=true;
+    try{const r=await fetch(`${NTFY_URL}/${topic}`,{method:'POST',body:d,headers:{'Title':'expiry-date'}});
+        if(!r.ok)throw new Error(`HTTP ${r.status}`);
+        document.getElementById('status').className='status sent';document.getElementById('status').textContent=`📨 送信完了: ${d}`;
+        addHistory(d);setTimeout(clearAll,1000);
+    }catch(err){document.getElementById('status').className='status error';document.getElementById('status').textContent='⚠️ 送信失敗: '+err.message;document.getElementById('send-btn').disabled=false}
+}
+let hc=0;
+function addHistory(d){hc++;document.getElementById('history-count').textContent=hc;const div=document.getElementById('history-list');const t=new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});const item=document.createElement('div');item.className='history-item';item.innerHTML=`<span>📦 ${d}</span><span class="time">${t}</span>`;div.insertBefore(item,div.firstChild);while(div.children.length>30)div.removeChild(div.lastChild)}
+</script>
 </body>
 </html>
