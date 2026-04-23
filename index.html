@@ -47,11 +47,12 @@
     <div id="status" class="status ready">📷 Lensでスキャン → 戻ったら緑ボタン</div>
 
     <!-- ★ポイント: JavaScriptなし。<a>タグ直リンク。Chromeがintentを処理する -->
-    <a class="lens-btn" href="intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.google.ar.lens;end">
+    <div id="status" class="status ready">📷 Lensでスキャン → 戻ったら緑ボタン</div>
+
+    <!-- 公式Chrome Intent構文: intent://HOST/#Intent;scheme=SCHEME;package=PACKAGE;end -->
+    <a class="lens-btn" href="intent://lens/#Intent;scheme=google;package=com.google.ar.lens;S.browser_fallback_url=https%3A%2F%2Flens.google.com;end">
         🔍 Google Lensを開く
     </a>
-
-    <div class="lens-hint">
         <span class="n">1</span> Lensが開く → ラベルを映す<br>
         <span class="n">2</span> テキストをタップ → <strong>コピー</strong><br>
         <span class="n">3</span> ここに戻る → <strong>緑ボタンで読み取り！</strong>
